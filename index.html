@@ -1,14 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-    <script type="module" crossorigin src="/assets/index-DwCc1ydx.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DrlFlRCH.css">
+    <title>Contact | NXTLVL prod</title>
+    <link rel="stylesheet" href="/assets/index-Dr1F1RCH.css" />
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+        background-color: #f9f9f9;
+      }
+      form {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      input, textarea, button {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+      button {
+        background-color: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #result {
+        text-align: center;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <form id="contact-form">
+      <input type="hidden" name="access_key" value="c103889e-6c78-4449-8c68-f28c49a2330e" />
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="text" name="phone" placeholder="Your Phone (optional)" />
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+      <div id="result"></div>
+    </form>
+
+    <script>
+      const form = document.getElementById("contact-form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        result.innerHTML = "Sending...";
+
+        const formData = new FormData(form);
+
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          result.innerHTML = "Message sent successfully!";
+          form.reset();
+        } else {
+          result.innerHTML = "Error: " + data.message;
+        }
+      });
+    </script>
   </body>
 </html>
